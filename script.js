@@ -14,9 +14,9 @@ let messages = [
     {msg:'I love you so much', emoji:'&#128153;'},
     {msg:'Love pwede pakagat ng pwet mo', emoji:'&#128073;&#128072;'},
     {msg:'Sarap mo talaga', emoji:'&#128563;'},
-    {msg: 'I miss you', emoji:'&#128577;'},
-    {msg: 'Love pwede pahawak dede mo', emoji: '&#128073;&#128072;'},
-    {msg: 'Wag nagpapapagod masiyado ah', emoji: '&#128577;'}
+    {msg: 'I miss you', emoji:''},
+    {msg: 'MJ pwede upuan mo mukha ko', emoji: '&#128073;&#128072;'},
+    {msg: 'Love pwede pahawak dede mo', emoji: '&#128073;&#128072;'}
 ]
 setPixelToWorldScale()
 window.addEventListener("resize", setPixelToWorldScale)
