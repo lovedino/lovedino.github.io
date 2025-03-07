@@ -1,53 +1,53 @@
-import { updateGround, setupGround } from "./ground.js"
-import { updateDino, setupDino, getDinoRect, setDinoLose } from "./dino.js"
-import { updateCactus, setupCactus, getCactusRects } from "./cactus.js"
+import { updateGround, setupGround } from "./ground.js";
+import { updateDino, setupDino, getDinoRect, setDinoLose } from "./dino.js";
+import { updateCactus, setupCactus, getCactusRects } from "./cactus.js";
 
-const WORLD_WIDTH = 100
-const WORLD_HEIGHT = 30
-const SPEED_SCALE_INCREASE = 0.00001
+const WORLD_WIDTH = 100;
+const WORLD_HEIGHT = 30;
+const SPEED_SCALE_INCREASE = 0.00001;
 
-const worldElem = document.querySelector("[data-world]")
-const scoreElem = document.querySelector("[data-score]")
-const startScreenElem = document.querySelector("[data-start-screen]")
+const worldElem = document.querySelector("[data-world]");
+const scoreElem = document.querySelector("[data-score]");
+const startScreenElem = document.querySelector("[data-start-screen]");
 
 let messages = [
-    {msg:'I love you so much', emoji:'&#128153;'},
-    {msg:'Love pwede pakagat ng pwet mo', emoji:'&#128073;&#128072;'},
-    {msg:'Sarap mo talaga', emoji:'&#128563;'},
-    {msg: 'I miss you', emoji:''},
-    {msg: 'MJ pwede upuan mo mukha ko', emoji: '&#128073;&#128072;'},
-    {msg: 'Love pwede pahawak dede mo', emoji: '&#128073;&#128072;'}
-]
-setPixelToWorldScale()
-window.addEventListener("resize", setPixelToWorldScale)
-document.addEventListener("keydown", handleStart, { once: true })
-document.addEventListener("click", handleStart, { once: true })
+  { msg: 'Did you know, dinosaurs mean "terrible lizards" ' },
+  { msg: "There were over 700 species of dinosaurs" },
+  { msg: "Tyrannosaurus Rex was the most ferocious dinosaur" },
+  { msg: "The longest dinosaur name is Micropachycephalosaurus" },
+  { msg: "BIRDS ARE DINOSAURS" },
+  { msg: "An asteroid hit the earth and they un-alive" },
+];
+setPixelToWorldScale();
+window.addEventListener("resize", setPixelToWorldScale);
+document.addEventListener("keydown", handleStart, { once: true });
+document.addEventListener("click", handleStart, { once: true });
 
-let lastTime
-let speedScale
-let score
+let lastTime;
+let speedScale;
+let score;
 function update(time) {
   if (lastTime == null) {
-    lastTime = time
-    window.requestAnimationFrame(update)
-    return
+    lastTime = time;
+    window.requestAnimationFrame(update);
+    return;
   }
-  const delta = time - lastTime
+  const delta = time - lastTime;
 
-  updateGround(delta, speedScale)
-  updateDino(delta, speedScale)
-  updateCactus(delta, speedScale)
-  updateSpeedScale(delta)
-  updateScore(delta)
-  if (checkLose()) return handleLose()
+  updateGround(delta, speedScale);
+  updateDino(delta, speedScale);
+  updateCactus(delta, speedScale);
+  updateSpeedScale(delta);
+  updateScore(delta);
+  if (checkLose()) return handleLose();
 
-  lastTime = time
-  window.requestAnimationFrame(update)
+  lastTime = time;
+  window.requestAnimationFrame(update);
 }
 
 function checkLose() {
-  const dinoRect = getDinoRect()
-  return getCactusRects().some(rect => isCollision(rect, dinoRect))
+  const dinoRect = getDinoRect();
+  return getCactusRects().some((rect) => isCollision(rect, dinoRect));
 }
 
 function isCollision(rect1, rect2) {
@@ -56,49 +56,48 @@ function isCollision(rect1, rect2) {
     rect1.top < rect2.bottom &&
     rect1.right > rect2.left &&
     rect1.bottom > rect2.top
-  )
+  );
 }
 
 function updateSpeedScale(delta) {
-  speedScale += delta * SPEED_SCALE_INCREASE
+  speedScale += delta * SPEED_SCALE_INCREASE;
 }
 
 function updateScore(delta) {
-  score += delta * 0.01
-  scoreElem.textContent = Math.floor(score)
+  score += delta * 0.01;
+  scoreElem.textContent = Math.floor(score);
 }
 
 function handleStart() {
-  lastTime = null
-  speedScale = 1
-  score = 0
-  setupGround()
-  setupDino()
-  setupCactus()
-  startScreenElem.classList.add("hide")
-  window.requestAnimationFrame(update)
+  lastTime = null;
+  speedScale = 1;
+  score = 0;
+  setupGround();
+  setupDino();
+  setupCactus();
+  startScreenElem.classList.add("hide");
+  window.requestAnimationFrame(update);
 }
 
 function handleLose() {
-  setDinoLose()
+  setDinoLose();
   setTimeout(() => {
-    document.addEventListener("keydown", handleStart, { once: true })
-    document.addEventListener("click", handleStart, { once: true })
-    startScreenElem.classList.remove("hide")
-    let randomIndex = Math.trunc(Math.random() * messages.length)
-    startScreenElem.innerHTML = messages[randomIndex].msg + messages[randomIndex].emoji
-    
-  }, 100)
+    document.addEventListener("keydown", handleStart, { once: true });
+    document.addEventListener("click", handleStart, { once: true });
+    startScreenElem.classList.remove("hide");
+    let randomIndex = Math.trunc(Math.random() * messages.length);
+    startScreenElem.innerHTML = `<p style="text-align: center;">FUN FACT <br><br>${messages[randomIndex].msg}</p>`;
+  }, 100);
 }
 
 function setPixelToWorldScale() {
-  let worldToPixelScale
+  let worldToPixelScale;
   if (window.innerWidth / window.innerHeight < WORLD_WIDTH / WORLD_HEIGHT) {
-    worldToPixelScale = window.innerWidth / WORLD_WIDTH
+    worldToPixelScale = window.innerWidth / WORLD_WIDTH;
   } else {
-    worldToPixelScale = window.innerHeight / WORLD_HEIGHT
+    worldToPixelScale = window.innerHeight / WORLD_HEIGHT;
   }
 
-  worldElem.style.width = `${WORLD_WIDTH * worldToPixelScale}px`
-  worldElem.style.height = `${WORLD_HEIGHT * worldToPixelScale}px`
+  worldElem.style.width = `${WORLD_WIDTH * worldToPixelScale}px`;
+  worldElem.style.height = `${WORLD_HEIGHT * worldToPixelScale}px`;
 }
